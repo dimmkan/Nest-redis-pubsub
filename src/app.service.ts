@@ -23,12 +23,17 @@ export class AppService {
 
     await subscriber.connect();
     await subscriber.subscribe('myCoolChannel2', (message) => {
-      console.log(message); // 'message'
+      console.log(JSON.parse(message)); // 'message'
       subscriber.quit();
     });
 
+    body.additional = {
+      test1: 'test1',
+      test2: 'test2',
+    };
+
     await publisher.connect();
-    await publisher.publish('myCoolChannel1', body.message);
+    await publisher.publish('myCoolChannel1', JSON.stringify(body));
     await publisher.disconnect();
   }
 }
