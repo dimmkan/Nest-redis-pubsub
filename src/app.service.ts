@@ -4,23 +4,31 @@ import { createClient } from 'redis';
 @Injectable()
 export class AppService {
   async getHello(body): Promise<void> {
-    const client = createClient({
+    const publisher = createClient({
       socket: {
         host: '192.168.221.142',
       },
       password: 'sOmE_sEcUrE_pAsS',
     });
 
-    client.on('error', (err) => console.log('Redis Client Error', err));
+    const subscriber = createClient({
+      socket: {
+        host: '192.168.221.142',
+      },
+      password: 'sOmE_sEcUrE_pAsS',
+    });
 
-    await client.connect();
-    const subscriber = client.duplicate();
-    const publisher = client.duplicate();
+    publisher.on('error', (err) => console.log('Redis Client Error', err));
+    subscriber.on('error', (err) => console.log('Redis Client Error', err));
 
-    await publisher.publish('myCoolChannel1', body.message);
-
+    await subscriber.connect();
     await subscriber.subscribe('myCoolChannel2', (message) => {
       console.log(message); // 'message'
+      subscriber.quit();
     });
+
+    await publisher.connect();
+    await publisher.publish('myCoolChannel1', body.message);
+    await publisher.disconnect();
   }
 }
