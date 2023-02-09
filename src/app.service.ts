@@ -7,13 +7,13 @@ export class AppService {
   async getHello(body): Promise<void> {
     const publisher = createClient({
       socket: {
-        host: '192.168.221.142',
+        host: '127.0.0.1',
       },
     });
 
     const subscriber = createClient({
       socket: {
-        host: '192.168.221.142',
+        host: '127.0.0.1',
       },
     });
 
