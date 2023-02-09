@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createClient } from 'redis';
+import * as randomNumber from 'random-number';
 
 @Injectable()
 export class AppService {
@@ -8,32 +9,31 @@ export class AppService {
       socket: {
         host: '192.168.221.142',
       },
-      password: 'sOmE_sEcUrE_pAsS',
     });
 
     const subscriber = createClient({
       socket: {
         host: '192.168.221.142',
       },
-      password: 'sOmE_sEcUrE_pAsS',
     });
 
     publisher.on('error', (err) => console.log('Redis Client Error', err));
     subscriber.on('error', (err) => console.log('Redis Client Error', err));
 
     await subscriber.connect();
-    await subscriber.subscribe('myCoolChannel2', (message) => {
+    await subscriber.subscribe('transmitter', (message) => {
       console.log(JSON.parse(message)); // 'message'
       subscriber.quit();
     });
 
-    body.additional = {
-      test1: 'test1',
-      test2: 'test2',
-    };
+    body.id = randomNumber({
+      min: 10000000,
+      max: 99999999,
+      integer: true,
+    });
 
     await publisher.connect();
-    await publisher.publish('myCoolChannel1', JSON.stringify(body));
+    await publisher.publish('adapter-muik', JSON.stringify(body));
     await publisher.disconnect();
   }
 }
