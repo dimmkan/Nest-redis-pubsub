@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { createClient } from 'redis';
 import * as randomNumber from 'random-number';
+import { writeFile } from 'fs/promises';
 
 @Injectable()
 export class AppService {
@@ -21,8 +22,11 @@ export class AppService {
     subscriber.on('error', (err) => console.log('Redis Client Error', err));
 
     await subscriber.connect();
-    await subscriber.subscribe('transmitter', (message) => {
+    await subscriber.subscribe('transmitter', async (message) => {
       console.log(JSON.parse(message)); // 'message'
+      if (JSON.parse(message).code === 0) {
+        await writeFile(`_${body.task}_.json`, message);
+      }
       subscriber.quit();
     });
 
