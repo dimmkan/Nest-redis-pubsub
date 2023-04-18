@@ -2,9 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { createClient } from 'redis';
 import * as randomNumber from 'random-number';
 import { writeFile } from 'fs/promises';
+import { IBodyType } from './interfaces/bodytype.interface';
+import { generatePayloadType } from './interfaces/payload.typing';
 
 @Injectable()
 export class AppService {
+  getParamType(reqBody: IBodyType): any {
+    type PayloadType<T> = ReturnType<typeof generatePayloadType>;
+    type MetricPayload = PayloadType<typeof reqBody>;
+
+    const payload: MetricPayload = {
+      index: 0,
+      card_type: 1,
+      phrase: 'Hello',
+    };
+
+    return payload;
+  }
+
   async getHello(body): Promise<void> {
     const publisher = createClient({
       socket: {
