@@ -17,4 +17,9 @@ export class AppController {
   getHello(@Body() body: IMeasure): Promise<void> {
     return this.appService.getHello(body);
   }
+
+  @Post('/easr')
+  easrListener(@Body() body: any): Promise<void> {
+    return this.appService.easrListener(body);
+  }
 }
