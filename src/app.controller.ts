@@ -22,4 +22,9 @@ export class AppController {
   easrListener(@Body() body: any): Promise<void> {
     return this.appService.easrListener(body);
   }
+
+  @Post('/diplom-function')
+  diplomFunctionListener(@Body() body: any): Promise<void> {
+    return this.appService.diplomFunctionListener(body);
+  }
 }
