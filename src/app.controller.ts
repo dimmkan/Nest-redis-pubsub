@@ -27,4 +27,9 @@ export class AppController {
   diplomFunctionListener(@Body() body: any): Promise<void> {
     return this.appService.diplomFunctionListener(body);
   }
+
+  @Post('/nri')
+  nriListener(@Body() body: any): Promise<void> {
+    return this.appService.nriListener(body);
+  }
 }
