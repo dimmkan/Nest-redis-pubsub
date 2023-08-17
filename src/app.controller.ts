@@ -32,4 +32,9 @@ export class AppController {
   nriListener(@Body() body: any): Promise<void> {
     return this.appService.nriListener(body);
   }
+
+  @Post('/hpsa')
+  hpsaListener(@Body() body: any): Promise<void> {
+    return this.appService.hpsaListener(body);
+  }
 }
