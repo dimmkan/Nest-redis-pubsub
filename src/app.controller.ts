@@ -37,4 +37,9 @@ export class AppController {
   hpsaListener(@Body() body: any): Promise<void> {
     return this.appService.hpsaListener(body);
   }
+
+  @Post('/startip')
+  startIpListener(@Body() body: any): Promise<void> {
+    return this.appService.startIpListener(body);
+  }
 }
