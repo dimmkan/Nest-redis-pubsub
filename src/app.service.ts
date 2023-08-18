@@ -189,11 +189,11 @@ export class AppService {
       subscriber.quit();
     });
 
-    body.id = randomNumber({
-      min: 10000000,
-      max: 99999999,
-      integer: true,
-    });
+    // body.id = randomNumber({
+    //   min: 10000000,
+    //   max: 99999999,
+    //   integer: true,
+    // });
 
     await publisher.connect();
     await publisher.publish('adapter-hpsa', JSON.stringify(body));
