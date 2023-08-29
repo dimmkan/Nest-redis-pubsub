@@ -42,4 +42,9 @@ export class AppController {
   startIpListener(@Body() body: any): Promise<void> {
     return this.appService.startIpListener(body);
   }
+
+  @Post('/start')
+  startListener(@Body() body: any): Promise<void> {
+    return this.appService.startListener(body);
+  }
 }
