@@ -47,4 +47,9 @@ export class AppController {
   startListener(@Body() body: any): Promise<void> {
     return this.appService.startListener(body);
   }
+
+  @Post('/onyma')
+  onymaListener(@Body() body: any): Promise<void> {
+    return this.appService.onymaListener(body);
+  }
 }
