@@ -23,9 +23,14 @@ export class AppController {
     return this.appService.easrListener(body);
   }
 
-  @Post('/diplom-function')
+  @Post('/diplom-functional')
   diplomFunctionListener(@Body() body: any): Promise<void> {
     return this.appService.diplomFunctionListener(body);
+  }
+
+  @Post('/diplom-procedure')
+  diplomProcedureListener(@Body() body: any): Promise<void> {
+    return this.appService.diplomProcedureListener(body);
   }
 
   @Post('/nri')
@@ -51,5 +56,20 @@ export class AppController {
   @Post('/onyma')
   onymaListener(@Body() body: any): Promise<void> {
     return this.appService.onymaListener(body);
+  }
+
+  @Post('/asr')
+  asrListener(@Body() body: any): Promise<void> {
+    return this.appService.asrListener(body);
+  }
+
+  @Post('/hpsa-mock')
+  hpsaMockListener(@Body() body: any): Promise<void> {
+    return this.appService.hpsaMockListener(body);
+  }
+
+  @Post('/bis')
+  bisListener(@Body() body: any): Promise<void> {
+    return this.appService.bisListener(body);
   }
 }
