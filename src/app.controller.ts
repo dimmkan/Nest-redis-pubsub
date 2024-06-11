@@ -77,4 +77,9 @@ export class AppController {
   sipalListener(@Body() body: any): Promise<void> {
     return this.appService.sipalListener(body);
   }
+
+  @Post('/portal')
+  portalListener(@Body() body: any): Promise<void> {
+    return this.appService.portalListener(body);
+  }
 }
