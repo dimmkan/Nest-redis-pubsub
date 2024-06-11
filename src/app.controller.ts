@@ -72,4 +72,9 @@ export class AppController {
   bisListener(@Body() body: any): Promise<void> {
     return this.appService.bisListener(body);
   }
+
+  @Post('/sipal')
+  sipalListener(@Body() body: any): Promise<void> {
+    return this.appService.sipalListener(body);
+  }
 }
