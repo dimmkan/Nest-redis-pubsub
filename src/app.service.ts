@@ -72,23 +72,28 @@ export class AppService {
       },
     });
 
+    const idx = randomNumber({
+      min: 100000,
+      max: 999999,
+      integer: true,
+    });
+
     publisher.on('error', (err) => console.log('Redis Client Error', err));
     subscriber.on('error', (err) => console.log('Redis Client Error', err));
 
     await subscriber.connect();
     await subscriber.subscribe('transmitter', async (message) => {
       console.log(JSON.parse(message)); // 'message'
-      if (JSON.parse(message).code === 0) {
+      if (
+        JSON.parse(message).code === 0 &&
+        JSON.parse(message).message.id === idx
+      ) {
         await writeFile(`_${body.task}_.json`, message);
       }
       subscriber.quit();
     });
 
-    body.id = randomNumber({
-      min: 10000000,
-      max: 99999999,
-      integer: true,
-    });
+    body.id = idx;
 
     await publisher.connect();
     await publisher.publish('adapter-easr', JSON.stringify(body));
@@ -219,22 +224,29 @@ export class AppService {
     publisher.on('error', (err) => console.log('Redis Client Error', err));
     subscriber.on('error', (err) => console.log('Redis Client Error', err));
 
+    const idx = randomNumber({
+      min: 100000,
+      max: 999999,
+      integer: true,
+    });
+
     await subscriber.connect();
     await subscriber.subscribe('transmitter', async (message) => {
       console.log(JSON.parse(message)); // 'message'
-      if (JSON.parse(message).code === 0) {
+      console.log(JSON.parse(message).message.id === idx); // 'message'
+      if (
+        JSON.parse(message).code === 0 &&
+        JSON.parse(message).message.id === idx
+      ) {
         await writeFile(`_${body.task}_.json`, message);
       }
       subscriber.quit();
     });
 
-    // body.id = randomNumber({
-    //   min: 10000000,
-    //   max: 99999999,
-    //   integer: true,
-    // });
+    body.id = idx;
 
     await publisher.connect();
+    await publisher.setEx(body.id.toString(), 180, JSON.stringify(body));
     await publisher.publish('adapter-hpsa', JSON.stringify(body));
     await publisher.disconnect();
   }
@@ -363,20 +375,25 @@ export class AppService {
     publisher.on('error', (err) => console.log('Redis Client Error', err));
     subscriber.on('error', (err) => console.log('Redis Client Error', err));
 
+    const idx = randomNumber({
+      min: 100000,
+      max: 999999,
+      integer: true,
+    });
+
     await subscriber.connect();
     await subscriber.subscribe('transmitter', async (message) => {
       console.log(JSON.parse(message)); // 'message'
-      if (JSON.parse(message).code === 0) {
+      if (
+        JSON.parse(message).code === 0 &&
+        JSON.parse(message).message.id === idx
+      ) {
         await writeFile(`_${body.task}_.json`, message);
       }
       subscriber.quit();
     });
 
-    body.id = randomNumber({
-      min: 100000,
-      max: 999999,
-      integer: true,
-    });
+    body.id = idx;
 
     await publisher.connect();
     await publisher.publish('adapter-asr', JSON.stringify(body));
@@ -417,22 +434,28 @@ export class AppService {
     publisher.on('error', (err) => console.log('Redis Client Error', err));
     subscriber.on('error', (err) => console.log('Redis Client Error', err));
 
-    await subscriber.connect();
-    await subscriber.subscribe('transmitter', async (message) => {
-      console.log(JSON.parse(message)); // 'message'
-      if (JSON.parse(message).code === 0) {
-        await writeFile(`_${body.task}_.json`, message);
-      }
-      subscriber.quit();
-    });
-
-    body.id = randomNumber({
+    const idx = randomNumber({
       min: 100000,
       max: 999999,
       integer: true,
     });
 
+    await subscriber.connect();
+    await subscriber.subscribe('transmitter', async (message) => {
+      console.log(JSON.parse(message)); // 'message'
+      if (
+        JSON.parse(message).code === 0 &&
+        JSON.parse(message).message.id === idx
+      ) {
+        await writeFile(`_${body.task}_.json`, message);
+      }
+      subscriber.quit();
+    });
+
+    body.id = idx;
+
     await publisher.connect();
+    await publisher.setEx(body.id.toString(), 180, JSON.stringify(body));
     await publisher.publish('adapter-bis', JSON.stringify(body));
     await publisher.disconnect();
   }
@@ -505,7 +528,171 @@ export class AppService {
     });
 
     await publisher.connect();
+    await publisher.setEx(body.id.toString(), 180, JSON.stringify(body));
     await publisher.publish('adapter-portal', JSON.stringify(body));
+    await publisher.disconnect();
+  }
+
+  async spiderListener(body): Promise<void> {
+    const publisher = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    const subscriber = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    publisher.on('error', (err) => console.log('Redis Client Error', err));
+    subscriber.on('error', (err) => console.log('Redis Client Error', err));
+
+    const idx = randomNumber({
+      min: 100000,
+      max: 999999,
+      integer: true,
+    });
+
+    await subscriber.connect();
+    await subscriber.subscribe('transmitter', async (message) => {
+      console.log(JSON.parse(message)); // 'message'
+      if (
+        JSON.parse(message).code === 0 &&
+        JSON.parse(message).message.id === idx
+      ) {
+        await writeFile(`_${body.task}_.json`, message);
+      }
+      subscriber.quit();
+    });
+
+    body.id = idx;
+
+    await publisher.connect();
+    await publisher.setEx(body.id.toString(), 180, JSON.stringify(body));
+    await publisher.publish('adapter-spider', JSON.stringify(body));
+    await publisher.disconnect();
+  }
+
+  async eipListener(body): Promise<void> {
+    const publisher = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    const subscriber = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    publisher.on('error', (err) => console.log('Redis Client Error', err));
+    subscriber.on('error', (err) => console.log('Redis Client Error', err));
+
+    const idx = randomNumber({
+      min: 100000,
+      max: 999999,
+      integer: true,
+    });
+
+    await subscriber.connect();
+    await subscriber.subscribe('transmitter', async (message) => {
+      console.log(JSON.parse(message)); // 'message'
+      if (JSON.parse(message).code === 0) {
+        await writeFile(`_${body.task}_.json`, message);
+      }
+      subscriber.quit();
+    });
+
+    body.id = idx;
+
+    await publisher.connect();
+    await publisher.setEx(body.id.toString(), 180, JSON.stringify(body));
+    await publisher.publish('adapter-eip', JSON.stringify(body));
+    await publisher.disconnect();
+  }
+
+  async itvapiListener(body): Promise<void> {
+    const publisher = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    const subscriber = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    publisher.on('error', (err) => console.log('Redis Client Error', err));
+    subscriber.on('error', (err) => console.log('Redis Client Error', err));
+
+    const idx = randomNumber({
+      min: 1000000000,
+      max: 9999999999,
+      integer: true,
+    });
+
+    await subscriber.connect();
+    await subscriber.subscribe('transmitter', async (message) => {
+      console.log(JSON.parse(message)); // 'message'
+      if (
+        JSON.parse(message).code === 0 &&
+        JSON.parse(message).message.id === idx
+      ) {
+        await writeFile(`_${body.task}_.json`, message);
+      }
+      subscriber.quit();
+    });
+
+    body.id = idx;
+
+    await publisher.connect();
+    await publisher.setEx(body.id.toString(), 180, JSON.stringify(body));
+    await publisher.publish('adapter-itvapi', JSON.stringify(body));
+    await publisher.disconnect();
+  }
+
+  async rtsaListener(body): Promise<void> {
+    const publisher = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    const subscriber = createClient({
+      socket: {
+        host: '127.0.0.1',
+      },
+    });
+
+    publisher.on('error', (err) => console.log('Redis Client Error', err));
+    subscriber.on('error', (err) => console.log('Redis Client Error', err));
+
+    // const idx = randomNumber({
+    //   min: 1000000000,
+    //   max: 9999999999,
+    //   integer: true,
+    // });
+
+    await subscriber.connect();
+    await subscriber.subscribe('transmitter', async (message) => {
+      console.log(JSON.parse(message)); // 'message'
+      if (
+        JSON.parse(message).code === 0 &&
+        JSON.parse(message).message.id === body.id
+      ) {
+        await writeFile(`_${body.task}_.json`, message);
+      }
+      subscriber.quit();
+    });
+
+    await publisher.connect();
+    await publisher.setEx(body.id.toString(), 180, JSON.stringify(body));
+    await publisher.publish('adapter-rtsa', JSON.stringify(body));
     await publisher.disconnect();
   }
 }

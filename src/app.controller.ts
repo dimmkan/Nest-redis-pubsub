@@ -82,4 +82,24 @@ export class AppController {
   portalListener(@Body() body: any): Promise<void> {
     return this.appService.portalListener(body);
   }
+
+  @Post('/spider')
+  spiderListener(@Body() body: any): Promise<void> {
+    return this.appService.spiderListener(body);
+  }
+
+  @Post('/eip')
+  eipListener(@Body() body: any): Promise<void> {
+    return this.appService.eipListener(body);
+  }
+
+  @Post('/itvapi')
+  itvapiListener(@Body() body: any): Promise<void> {
+    return this.appService.itvapiListener(body);
+  }
+
+  @Post('/rtsa')
+  rtsaiListener(@Body() body: any): Promise<void> {
+    return this.appService.rtsaListener(body);
+  }
 }
